@@ -3,6 +3,7 @@
  * @date 2018/6/20
  * @description MVVM--Observer
  */
+
 class Observer {
     constructor(data){
         this.observe(data);
