@@ -1,3 +1,9 @@
+/**
+ * @author Miyi
+ * @date 2018/6/20
+ * @description MVVM
+ */
+
 class MVVM {
     constructor(options) {
         //先把可用的东西挂载在实例上，加上$是私有的，外面调不到
