@@ -142,21 +142,45 @@ CompileUtil = {
         });
     },
     /**
-     * {{ info.a }} => How are you 取值
+     * 文本节点编译
      * @param node
      * @param vm
      * @param text
      */
     text(node,vm,text){
-
         let updateFn = this.updater['textUpdater'];
         let value = this.getTextVal(vm,text);
-        console.log(value);
+
+        //为每一个文本添加观察者，{{a}},{{b}} 既观察a也观察b
+        text.replace(/\{\{([^}]+)\}\}/g, (...arguments)=>{
+            new Watcher(vm,arguments[1].trim(),(newValue) => {
+                //若数据变化，文本节点要重新获取依赖的属性，更新文本中的内容
+                updateFn && updateFn(node,this.getTextVal(vm,newValue));
+            });
+        });
+
         //这个方法存在再去调用
         updateFn && updateFn(node,value);
     },
     /**
-     * 输入框处理
+     * 赋新值
+     * @param vm
+     * @param expr 新的值
+     * @param value
+     * @returns {T}
+     */
+    setVal(vm,expr,value){ //expr => [info,a]
+        expr = expr.split('.');
+        return expr.reduce((pre,next,currentIndex)=>{
+            if (currentIndex === expr.length-1){
+                return pre[next] = value;
+            }
+            return pre[next];
+        },vm.$data);
+
+    },
+    /**
+     * 带v-model属性的元素节点编译
      * @param node
      * @param vm
      * @param expr
@@ -164,6 +188,16 @@ CompileUtil = {
     model(node,vm,expr){
         let updateFn = this.updater['modelUpdater'];
 
+        //这里应该加一个监控，数据变化了，就调用watcher的回调函数cb(),将新的值传递过来
+        //强调一下，他不会一创建Watcher就主动调用cb()，直到调用Watcher.update()时，才会调用这个cb()
+        new Watcher(vm,expr,(newValue)=>{
+            updateFn && updateFn(node,this.getVal(vm,expr));
+        });
+
+        node.addEventListener('input',(e)=>{
+            let newValue = e.target.value;
+            this.setVal(vm,expr,newValue);
+        });
         //这个方法存在再去调用
         updateFn && updateFn(node,this.getVal(vm,expr));
     },
