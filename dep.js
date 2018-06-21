@@ -1,3 +1,9 @@
+/**
+ * @author Miyi
+ * @date 2018/6/20
+ * @description MVVM--Dep
+ */
+
 class Dep{
     constructor(){
         //订阅的数组
