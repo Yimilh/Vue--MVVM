@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue-MVVM</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="message">{{ message }}
+    <ul><li></li></ul>
+    <input type="text" v-model="info.a">
+    <div>{{ info.a }}</div>
+</div>
+<script src="compile.js"></script>
+<script src="MVVM.js"></script>
+<script>
+    let vm = new MVVM({
+        el:'#app',
+        data:{
+            message:'Hello I am Yimi',
+            info:{
+                a:'How are you'
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
