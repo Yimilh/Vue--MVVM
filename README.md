@@ -14,6 +14,27 @@ MVVM（Model-View-ViewModel）是基于MVC和MVP的体系结构模式，它目�
 - 3.由于ViewModel中的双向数据绑定，当Model发生变化，ViewModel就会自动更新；ViewModel变化，Model也会更新
 ## 这里只实现文本节点和v-model属性节点的MVVM模式
 - 总的思路：先有3个主要js文件，分别写模板编译Compile( )和数据劫持Observer( )，最后靠MVVM( )来整合的。
+
+```
+project
+│   
+└───index_mvvm.html  页面入口文件
+│   
+└───MVVM.js          MVVM类：整合功能
+│
+└───compile.js       compile类：编译功能
+│   
+└───observer.js      observer类：数据劫持功能
+│   
+└───watcher.js       watcher类：观察者
+│   
+└───dep.js           dep类：发布订阅着
+│   
+└───README.md        
+   
+```
+
+
 ### 模板的编译Compile
 - 这个 {{ message}} 是模板，它要先取到数据data.message，然后要编译成我们想要的数据格式。
 ### 数据劫持Observer
